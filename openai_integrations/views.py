@@ -1,3 +1,4 @@
+import rest_framework.status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -29,12 +30,13 @@ class QueryAPIView(APIView):
 
 class PlantIdentification(APIView):
     def post(self, request):
+        api_key = request.data.get('api_key')
         image_file = request.FILES.get('image')
 
         if not image_file:
             return Response({"error": "No image provided"}, status=400)
 
-        headers = {'Api-key': 'cNX6UX4KWbSYsoYOYQueHrIky8qTgJ3YHC8aHfWRIYHKmn5xfB'}
+        headers = {'Api-key': api_key}
         files = {'image': image_file}
         response = requests.post('https://plant.id/api/v3/identification', headers=headers, files=files)
 
