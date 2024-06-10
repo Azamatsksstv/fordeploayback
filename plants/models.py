@@ -1,9 +1,13 @@
 from django.db import models
+from accounts.models import User
 
 
 class Plant(models.Model):
     title = models.CharField(max_length=100)
-    description = models.TextField()
-    is_liked = models.BooleanField(default=False)
-    image = models.FileField(upload_to='plant_images/', blank=True)
-    image_path = models.CharField(max_length=255, blank=True)
+    description = models.TextField(null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+
+class Watering(models.Model):
+    plant = models.ForeignKey(Plant, on_delete=models.CASCADE)
+    date = models.DateTimeField()
